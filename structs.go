@@ -68,6 +68,8 @@ func (s Signature) CSV(uri string, count int) string {
 	)
 }
 
+var enc = false
+
 func (s Signature) analyseSignature(summary *Summary, uri string) {
 	if s.Provenance == "" {
 		summary.ErrNoProvenance++
@@ -85,6 +87,13 @@ func (s Signature) analyseSignature(summary *Summary, uri string) {
 		summary.ErrNoEncoding++
 		if uri != "" && !contains(summary.NoEncoding, uri) {
 			summary.NoEncoding = append(summary.NoEncoding, uri)
+		}
+		if !enc && !contains(summary.EncodingSet, "None") {
+			summary.EncodingSet = append(summary.EncodingSet, "None")
+		}
+	} else {
+		if !contains(summary.EncodingSet, s.Encoding) {
+			summary.EncodingSet = append(summary.EncodingSet, s.Encoding)
 		}
 	}
 	if s.Relativity == "" {
@@ -107,7 +116,7 @@ type Summary struct {
 	ErrNoEncoding          int
 
 	// Sets to help understand content.
-	setEncoding []string
+	EncodingSet []string
 
 	// Records that need investigating.
 	Multiples    []string
