@@ -27,31 +27,32 @@ func init() {
 
 var url = "https://query.wikidata.org/sparql"
 var query = `
-		SELECT DISTINCT ?format ?formatLabel ?puid ?ldd ?extension ?mimetype ?sig ?referenceLabel ?date ?encodingLabel ?offset ?relativityLabel WHERE
-		{
-		  ?format wdt:P2748 ?puid.
-		  OPTIONAL { ?format wdt:P3266 ?ldd }
-		  OPTIONAL { ?format wdt:P1195 ?extension }
-		  OPTIONAL { ?format wdt:P1163 ?mimetype }
-		  OPTIONAL { ?format wdt:P4152 ?sig }
-		  OPTIONAL {
-		     ?format p:P4152 ?object.
-		     ?object prov:wasDerivedFrom ?provenance.
-		     ?provenance pr:P248 ?reference;
-		        pr:P813 ?date.
-		  }
-		  OPTIONAL {
-		     ?format p:P4152 ?object.
-		     ?object pq:P3294 ?encoding.
-		     ?object pq:P4153 ?offset.
-		  }
-		  OPTIONAL {
-		     ?format p:P4152 ?object.
-		     ?object pq:P2210 ?relativity.
-		  }
-		  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE], en". }
-		}
-		order by ?format
+	SELECT DISTINCT ?format ?formatLabel ?puid ?ldd ?extension ?mimetype ?sig ?referenceLabel ?date ?encodingLabel ?offset ?relativityLabel WHERE
+	{
+	  ?format wdt:P31/wdt:P279* wd:Q235557.
+	  OPTIONAL { ?format wdt:P2748 ?puid. }
+	  OPTIONAL { ?format wdt:P3266 ?ldd }
+	  OPTIONAL { ?format wdt:P1195 ?extension }
+	  OPTIONAL { ?format wdt:P1163 ?mimetype }
+	  OPTIONAL { ?format wdt:P4152 ?sig }
+	  OPTIONAL {
+	     ?format p:P4152 ?object.
+	     ?object prov:wasDerivedFrom ?provenance.
+	     ?provenance pr:P248 ?reference;
+	        pr:P813 ?date.
+	  }
+	  OPTIONAL {
+	     ?format p:P4152 ?object.
+	     ?object pq:P3294 ?encoding.
+	     ?object pq:P4153 ?offset.
+	  }
+	  OPTIONAL {
+	     ?format p:P4152 ?object.
+	     ?object pq:P2210 ?relativity.
+	  }
+	  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE], en". }
+	}
+	order by ?format
 `
 
 var wikidataMapping = make(map[string]Wikidata)
